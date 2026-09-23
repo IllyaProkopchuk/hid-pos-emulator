@@ -76,10 +76,10 @@ if (-not $Setup) {
     Remove-Item -Path $installDir -Recurse -Force -ErrorAction SilentlyContinue
 }
 
-# 2. Driver package. pnputil publishes the INF as oemNN.inf, so the original name has to be looked
-#    up in the enumeration.
+# 2. Driver packages. pnputil publishes the INF as oemNN.inf, so the original name has to be looked
+#    up in the enumeration. All of them: installing a rebuilt driver over an old one leaves both.
 $enumerated = & pnputil /enum-drivers
-$publishedName = $null
+$publishedNames = @()
 
 for ($index = 0; $index -lt $enumerated.Count; $index++) {
     if ($enumerated[$index] -match 'Published Name\s*:\s*(oem\d+\.inf)') {
@@ -87,12 +87,15 @@ for ($index = 0; $index -lt $enumerated.Count; $index++) {
     }
 
     if ($enumerated[$index] -match 'Original Name\s*:\s*HidPosEmu\.inf') {
-        $publishedName = $candidate
-        break
+        $publishedNames += $candidate
     }
 }
 
-if ($publishedName) {
+if (-not $publishedNames) {
+    Write-Host 'No HidPosEmu driver package is installed'
+}
+
+foreach ($publishedName in $publishedNames) {
     Write-Host "Removing the driver package ($publishedName)"
     & pnputil /delete-driver $publishedName /uninstall /force
 
@@ -100,16 +103,25 @@ if ($publishedName) {
         Write-Warning "pnputil returned exit code $LASTEXITCODE."
     }
 }
-else {
-    Write-Host 'No HidPosEmu driver package is installed'
+
+# 3. Device entries. Windows keeps a record of every SWD\HidPosEmu device that was ever plugged in,
+#    with its driver and manufacturer, after the device itself is gone. Remove those too, so that
+#    nothing of the emulator is left and a new install starts from its own INF.
+$instanceIds = & pnputil /enum-devices /class HIDClass |
+    Select-String 'Instance ID:\s*(SWD\\HidPosEmu\\\S+)' |
+    ForEach-Object { $_.Matches[0].Groups[1].Value }
+
+foreach ($instanceId in $instanceIds) {
+    Write-Host "Removing the device entry $instanceId"
+    & pnputil /remove-device $instanceId | Out-Null
 }
 
-# 3. Certificates
+# 4. Certificates
 Write-Host 'Removing the signing certificate'
 & certutil -delstore Root 'HidPosEmu Dev Signing' | Out-Null
 & certutil -delstore TrustedPublisher 'HidPosEmu Dev Signing' | Out-Null
 
-# 4. Shortcuts that install.ps1 created. The unzipped folder they pointed into is left alone.
+# 5. Shortcuts that install.ps1 created. The unzipped folder they pointed into is left alone.
 $shortcutName = 'HID-POS emulator'
 
 foreach ($shortcutPath in @(
