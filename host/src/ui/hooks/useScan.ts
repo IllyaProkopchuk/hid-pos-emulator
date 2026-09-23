@@ -22,7 +22,8 @@ export type Scan = {
   /** Why a scan cannot go out right now, shown under the text box; `null` when it can. */
   blockedReason: string | null;
   isDisabled: boolean;
-  scan: (presetId: string) => void;
+  /** Send what is in the text box. */
+  scan: () => void;
   /** Apply a code decoded from a photo, and scan it straight away if asked to. */
   applyCode: (code: DecodedCode, fileName: string, shouldScan: boolean) => void;
 };
@@ -69,11 +70,11 @@ export const useScan = (
     });
   }, [hasLengthByte]);
 
-  const sendScan = (presetId: string, input: CustomScanInput) => {
+  // The page only scans what is in the text box; the host's other presets are for POST /scan.
+  const sendScan = (input: CustomScanInput) => {
     send({
       type: 'ui-scan',
-      presetId,
-      // Sent for presets too: the host ignores it there, and the page has always sent it.
+      presetId: 'custom',
       text: input.text,
       profileId: profileId ?? undefined,
       options: {
@@ -82,12 +83,11 @@ export const useScan = (
         delayMs: Number(settings.delayMs),
         faults: FAULTS.map((fault) => fault.id).filter((fault) => settings.faults.has(fault)),
       },
-      source: presetId === 'custom' && input.source ? input.source : undefined,
+      source: input.source ?? undefined,
     });
   };
 
-  const scan = (presetId: string) =>
-    sendScan(presetId, { text, aimPrefix: settings.aimPrefix, source });
+  const scan = () => sendScan({ text, aimPrefix: settings.aimPrefix, source });
 
   const applyCode = (code: DecodedCode, fileName: string, shouldScan: boolean) => {
     const decoded: CustomScanInput = {
@@ -102,7 +102,7 @@ export const useScan = (
 
     if (shouldScan && !isDisabled) {
       // The state above has not re-rendered yet, so the decoded values are passed in directly.
-      sendScan('custom', decoded);
+      sendScan(decoded);
     }
   };
 

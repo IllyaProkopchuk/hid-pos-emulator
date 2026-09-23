@@ -164,6 +164,8 @@ nor the npm registry. `build.ps1 -SkipHost` opts out and produces a driver-only 
 
 Run these with the WebHID app you are testing open in Chrome. Where a step only needs the raw
 reports, the snippet under "Scans arrive but the app ignores them" below is enough of an app.
+A preset id below means that preset's text, typed into the page or sent as `presetId` to
+`POST /scan` (see `host/README.md`).
 
 | #   | Step                                                                                                                          | Expected                                                                                                                                                                                                            |
 | --- | ----------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |

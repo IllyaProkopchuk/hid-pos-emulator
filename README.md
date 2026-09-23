@@ -14,7 +14,7 @@ the emulator exactly as it reads a scanner on a USB port.
  Windows 11 developer machine
  +----------------------------------------------------------------------------+
  |  control page http://localhost:7411  --ws-->  host (Node/TS, unelevated)    |
- |  (src/ui, React: presets, faults,            framing.ts builds the wire     |
+ |  (src/ui, React: text, faults,               framing.ts builds the wire     |
  |   photo decoder, POST /scan)                 reports                        |
  |                                                    | named pipe JSON lines  |
  |                                                    v                        |

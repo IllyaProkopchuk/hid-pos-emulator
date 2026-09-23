@@ -4,7 +4,6 @@ import { Log } from '@/components/log/Log';
 import { ScanOptions } from '@/components/options/ScanOptions';
 import { CustomScan } from '@/components/scan/CustomScan';
 import { ImageScan } from '@/components/scan/ImageScan';
-import { PresetGrid } from '@/components/scan/PresetGrid';
 import { SendAs } from '@/components/scan/SendAs';
 import { useEmulator } from '@/hooks/useEmulator';
 import { useScan } from '@/hooks/useScan';
@@ -44,11 +43,6 @@ export const App = () => {
               selectedProfileId={scan.profileId}
               onSelect={scan.chooseProfile}
             />
-            <PresetGrid
-              presets={state?.presets ?? []}
-              isDisabled={scan.isDisabled}
-              onScan={scan.scan}
-            />
             <CustomScan
               text={scan.text}
               source={scan.source}
@@ -56,7 +50,7 @@ export const App = () => {
               blockedReason={scan.blockedReason}
               isDisabled={scan.isDisabled}
               onTextChange={scan.setText}
-              onScan={() => scan.scan('custom')}
+              onScan={scan.scan}
             />
             <ImageScan onCode={scan.applyCode} />
           </section>

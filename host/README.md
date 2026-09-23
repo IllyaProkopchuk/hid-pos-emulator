@@ -62,6 +62,9 @@ device on those collections.
 
 ## Presets
 
+The control page has no preset buttons, only its text box, which is the `custom` preset. The
+others are named scans for `POST /scan` and the WebSocket API (`presetId`), for scripts and tests.
+
 | id              | text                                   | what it exercises                                          |
 | --------------- | -------------------------------------- | ---------------------------------------------------------- |
 | `ticketBarcode` | `221-3351-753`                         | a short barcode, one report                                |

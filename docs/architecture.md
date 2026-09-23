@@ -10,7 +10,7 @@ crosses two process boundaries and one privilege boundary on the way.
 
 ```
  control page (browser)          host (Node, unelevated)        service (LocalSystem)
- presets, faults, options  --ws-->  framing.ts builds the   --pipe-->  SwDeviceCreate
+ text, faults, options     --ws-->  framing.ts builds the   --pipe-->  SwDeviceCreate
                                     wire reports                       WriteFile(hid, report)
                                                                             |
  your app (Chrome/Electron)   <--- hidclass.sys <--- MsHidUmdf.sys <--- HidPosEmu.dll

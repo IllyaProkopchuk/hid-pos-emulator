@@ -52,7 +52,8 @@ the service changed, double-click `Uninstall.cmd`, then `Install.cmd`. To uninst
 4. Connect the scanner in your app as you would a real one; in Chrome that is the device picker,
    `navigator.hid.requestDevice({ filters: [{ usagePage: 0x8c }] })`. Once the app has it open,
    the card shows **app reading**.
-5. Press a preset, or type your own text, and the app receives the scan.
+5. Type the text to scan, for example `221-3351-753`, and press **Scan** (or Ctrl+Enter): the app
+   receives it. A photo of a barcode works too: drop it on the page or paste it.
 
 Devices you plugged in stay plugged after the emulator stops, because they belong to the service;
 unplug them on the page first if you want them gone.
