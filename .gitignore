@@ -1,0 +1,16 @@
+node_modules/
+out/
+host/public/build/
+*.pfx
+*.cer
+.vs/
+x64/
+Debug/
+Release/
+*.user
+
+# Session notes for continuing work on this machine; paths and context that are not the project.
+docs/handoff.md
+
+# IDE settings
+.idea/

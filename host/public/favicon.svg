@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="HID-POS emulator">
+  <!--
+    Zebra stripes, which is also what a barcode is. The widths are uneven and the stripes lean, so
+    the mark reads as an animal rather than a UPC symbol, and it still holds together at 16 pixels.
+    The ground matches the emulator page's own background.
+  -->
+  <defs>
+    <clipPath id="corner">
+      <rect width="32" height="32" rx="7" />
+    </clipPath>
+  </defs>
+  <g clip-path="url(#corner)">
+    <rect width="32" height="32" fill="#14161a" />
+    <g fill="#eef0f3">
+      <path d="M3.4 -1 h3.1 l-0.8 34 h-3.1 z" />
+      <path d="M8.4 -1 h1.5 l-0.5 34 h-1.5 z" />
+      <path d="M11.8 -1 h3.8 l-0.9 34 h-3.8 z" />
+      <path d="M17.6 -1 h1.3 l-0.4 34 h-1.3 z" />
+      <path d="M20.8 -1 h2.6 l-0.7 34 h-2.6 z" />
+      <path d="M25.4 -1 h1.1 l-0.3 34 h-1.1 z" />
+      <path d="M28.6 -1 h2.4 l-0.6 34 h-2.4 z" />
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,32 @@
+{
+  "name": "hid-pos-emulator",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "yarn build:ui && tsx src/server/index.ts",
+    "dev": "node scripts/dev.mjs",
+    "build:ui": "esbuild src/ui/index.tsx --bundle --minify --sourcemap --format=esm --target=es2022 --log-level=warning --outfile=public/build/app.js",
+    "watch:ui": "esbuild src/ui/index.tsx --bundle --sourcemap --format=esm --target=es2022 --outfile=public/build/app.js --watch",
+    "test": "node --import tsx --test test/aim.test.ts test/descriptor.test.ts test/framing.test.ts test/serviceClient.test.ts",
+    "typecheck": "tsc --noEmit && tsc --noEmit -p src/ui"
+  },
+  "engines": {
+    "node": "^20.19"
+  },
+  "dependencies": {
+    "@zxing/library": "0.21.3",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.0",
+    "@types/react": "^18.3.0",
+    "@types/react-dom": "^18.3.0",
+    "@types/ws": "^8.18.0",
+    "esbuild": "~0.28.2",
+    "tsx": "^4.19.2",
+    "typescript": "^5.9.3"
+  }
+}

@@ -1,0 +1,25 @@
+# Only the host app is built here. The driver and the service need Visual Studio, the WDK and the
+# signing certificate, so they are built and signed on a developer machine with installer/build.ps1.
+
+name: host
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  host:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: host
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: yarn
+          cache-dependency-path: host/yarn.lock
+      - run: yarn --frozen-lockfile
+      - run: yarn test
+      - run: yarn typecheck

@@ -1,0 +1,89 @@
+;/*++
+;
+;Module Name:
+;
+;    HidPosEmu.inf
+;
+;Abstract:
+;    Installs HidPosEmu, a UMDF 2 virtual HID minidriver that presents a HID-POS barcode scanner.
+;    The devices themselves are created at run time by HidPosEmuSvc through SwDeviceCreate; this
+;    INF only binds the driver to the HidPosEmu\Scanner hardware id.
+;
+;Important:
+;    Depends on MsHidUmdf.inf, which was introduced in build 22000, so Windows 11 only.
+;
+;--*/
+
+[Version]
+Signature="$WINDOWS NT$"
+Class=HIDClass
+ClassGuid={745a17a0-74d3-11d0-b6fe-00a0c90f57da}
+Provider=%ProviderString%
+DriverVer=
+CatalogFile=HidPosEmu.cat
+PnpLockdown=1
+
+[DestinationDirs]
+DefaultDestDir = 13
+
+[SourceDisksNames]
+1=%Disk_Description%,,,
+
+[SourceDisksFiles]
+HidPosEmu.dll=1
+
+; ================= Device section =========================
+
+[Manufacturer]
+%ManufacturerString%=Standard, NT$ARCH$.10.0...22000
+
+[Standard.NT$ARCH$.10.0...22000]
+%DeviceDesc%=HidPosEmu, HidPosEmu\Scanner
+
+[HidPosEmu.NT]
+CopyFiles=UMDriverCopy
+Include=MsHidUmdf.inf
+Needs=MsHidUmdf.NT
+Include=WUDFRD.inf
+Needs=WUDFRD_LowerFilter.NT
+
+[HidPosEmu.NT.hw]
+Include=MsHidUmdf.inf
+Needs=MsHidUmdf.NT.hw
+Include=WUDFRD.inf
+Needs=WUDFRD_LowerFilter.NT.hw
+
+[HidPosEmu.NT.Services]
+Include=MsHidUmdf.inf
+Needs=MsHidUmdf.NT.Services
+Include=WUDFRD.inf
+Needs=WUDFRD_LowerFilter.NT.Services
+
+[HidPosEmu.NT.Filters]
+Include=WUDFRD.inf
+Needs=WUDFRD_LowerFilter.NT.Filters
+
+[HidPosEmu.NT.Wdf]
+UmdfService="HidPosEmu", HidPosEmu_Install
+UmdfServiceOrder=HidPosEmu
+UmdfKernelModeClientPolicy=AllowKernelModeClients
+UmdfFileObjectPolicy=AllowNullAndUnknownFileObjects
+UmdfMethodNeitherAction=Copy
+UmdfFsContextUsePolicy=CanUseFsContext2
+
+[HidPosEmu_Install]
+UmdfLibraryVersion=$UMDFVERSION$
+ServiceBinary="%13%\HidPosEmu.dll"
+
+; ================= copy files =========================
+
+[UMDriverCopy]
+HidPosEmu.dll
+
+;---------------------------------------------------------------;
+
+[Strings]
+ProviderString     = "HidPosEmu"
+ManufacturerString = "HidPosEmu"
+Disk_Description   = "HidPosEmu Installation Disk"
+DeviceDesc         = "HID-POS Scanner Emulator"
