@@ -88,6 +88,21 @@ values.
 The `8https://…` corruption of a length byte read as text is reproduced by the
 `unknownVendorLengthByte` profile, not by a fault mode.
 
+## History and starred codes
+
+Every scan sent from the page lands in **History**: the last 20, newest first, a repeated code
+moving to the top instead of appearing twice. **Scan** on a row sends it again in one click, with
+its own AIM prefix and the current terminator, delay and faults; clicking the code puts it into the
+text box to edit first.
+
+Up to six codes can be starred, with **☆** on a history row or **☆ Save** next to the Scan button.
+They sit as tiles above the text box, where a click scans them; the corner of a tile renames it,
+for example to `expired ticket`, or unstars it.
+
+The lists live in the browser's `localStorage`, so they survive a reload and a host restart but
+not a change of browser or port, and scans sent through `POST /scan` or the WebSocket API from
+outside the page are not recorded.
+
 ## Scan from image
 
 A photo or screenshot is a second source for the same Custom field. Drop a file on the image zone,

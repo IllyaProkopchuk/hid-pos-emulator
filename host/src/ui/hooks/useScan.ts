@@ -7,6 +7,7 @@ import { FAULTS } from '@/constants/faults';
 import { INITIAL_SCAN_SETTINGS } from '@/constants/scan';
 import type { CustomScanInput, ScanSettings } from '@/types';
 import type { DecodedCode } from '@/utils/barcodeDecoder';
+import type { SavedCode } from '@/utils/codeHistory';
 import { getBlockedReason } from '@/utils/serviceStatus';
 
 export type Scan = {
@@ -16,6 +17,8 @@ export type Scan = {
   text: string;
   setText: (text: string) => void;
   source: ScanSource | null;
+  /** What is in the text box, as it would be starred. */
+  currentCode: SavedCode;
   settings: ScanSettings;
   setSettings: (settings: ScanSettings) => void;
   hasLengthByte: boolean;
@@ -26,12 +29,23 @@ export type Scan = {
   scan: () => void;
   /** Apply a code decoded from a photo, and scan it straight away if asked to. */
   applyCode: (code: DecodedCode, fileName: string, shouldScan: boolean) => void;
+  /** Put a saved code into the text box and its AIM prefix into the options, without scanning. */
+  loadCode: (code: SavedCode) => void;
+  /** Send a saved code as it is, with the current terminator, pacing and faults. */
+  scanCode: (code: SavedCode) => void;
 };
 
-/** Everything the page knows about the next scan, and the one function that sends it. */
+const toSavedCode = ({ text, aimPrefix, source }: CustomScanInput): SavedCode =>
+  source === null ? { text, aimPrefix } : { text, aimPrefix, format: source.format };
+
+/**
+ * Everything the page knows about the next scan, and the one function that sends it. `onSent` hears
+ * about every scan that goes out, so it can be kept in the history.
+ */
 export const useScan = (
   state: EmulatorStateSnapshot | null,
   send: (message: UiToEmulatorMessage) => void,
+  onSent: (code: SavedCode) => void,
 ): Scan => {
   const [chosenProfileId, setChosenProfileId] = useState<DeviceProfileId | null>(null);
   const [text, setTextValue] = useState('');
@@ -71,7 +85,7 @@ export const useScan = (
   }, [hasLengthByte]);
 
   // The page only scans what is in the text box; the host's other presets are for POST /scan.
-  const sendScan = (input: CustomScanInput) => {
+  const sendScan = (input: CustomScanInput, saved: SavedCode = toSavedCode(input)) => {
     send({
       type: 'ui-scan',
       presetId: 'custom',
@@ -85,6 +99,11 @@ export const useScan = (
       },
       source: input.source ?? undefined,
     });
+
+    // An empty scan sends only the terminator; there is nothing worth keeping.
+    if (saved.text !== '') {
+      onSent(saved);
+    }
   };
 
   const scan = () => sendScan({ text, aimPrefix: settings.aimPrefix, source });
@@ -106,6 +125,17 @@ export const useScan = (
     }
   };
 
+  const loadCode = (code: SavedCode) => {
+    setTextValue(code.text);
+    setSettings((current) => ({ ...current, aimPrefix: code.aimPrefix }));
+    // The photo it may once have come from is not on the page any more.
+    setSource(null);
+  };
+
+  // The log line carries no photo, but the history keeps the symbology it was decoded as.
+  const scanCode = (code: SavedCode) =>
+    sendScan({ text: code.text, aimPrefix: code.aimPrefix, source: null }, code);
+
   const setText = (value: string) => {
     setTextValue(value);
     // Typed text no longer came from the photo.
@@ -118,6 +148,7 @@ export const useScan = (
     text,
     setText,
     source,
+    currentCode: toSavedCode({ text, aimPrefix: settings.aimPrefix, source }),
     settings,
     setSettings,
     hasLengthByte,
@@ -125,5 +156,7 @@ export const useScan = (
     isDisabled,
     scan,
     applyCode,
+    loadCode,
+    scanCode,
   };
 };

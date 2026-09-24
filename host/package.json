@@ -8,7 +8,7 @@
     "dev": "node scripts/dev.mjs",
     "build:ui": "esbuild src/ui/index.tsx --bundle --minify --sourcemap --format=esm --target=es2022 --log-level=warning --outfile=public/build/app.js",
     "watch:ui": "esbuild src/ui/index.tsx --bundle --sourcemap --format=esm --target=es2022 --outfile=public/build/app.js --watch",
-    "test": "node --import tsx --test test/aim.test.ts test/descriptor.test.ts test/framing.test.ts test/serviceClient.test.ts",
+    "test": "node --import tsx --test test/aim.test.ts test/codeHistory.test.ts test/descriptor.test.ts test/framing.test.ts test/serviceClient.test.ts",
     "typecheck": "tsc --noEmit && tsc --noEmit -p src/ui"
   },
   "engines": {

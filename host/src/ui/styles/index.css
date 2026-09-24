@@ -347,6 +347,198 @@ textarea {
   font-size: 13px;
 }
 
+/* Starred codes, above the text box */
+
+.StarGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: var(--s1);
+  margin-bottom: var(--s2);
+}
+
+.StarTile {
+  position: relative;
+  min-width: 0;
+}
+
+.StarTileBody {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+  text-align: left;
+  padding: var(--s1) var(--s2);
+  /* Room for the rename and unstar buttons in the corner. */
+  padding-right: 56px;
+  border: 1px solid var(--border-strong);
+  border-radius: 6px;
+  background: var(--panel-raised);
+}
+
+.StarTileScan:hover:not(:disabled) {
+  border-color: var(--accent);
+  background: #262c37;
+}
+
+.StarTileName {
+  font-weight: 600;
+  font-size: 13px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.StarTileName-empty {
+  font-weight: 400;
+  font-style: italic;
+  color: var(--muted);
+}
+
+.StarTileCode {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  min-width: 0;
+}
+
+.StarTileText {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--blue);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+
+.StarTileActions {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  display: flex;
+  opacity: 0;
+  transition: opacity 0.1s;
+}
+
+.StarTile:hover .StarTileActions,
+.StarTileActions:focus-within {
+  opacity: 1;
+}
+
+.StarredHint {
+  color: var(--muted);
+  font-size: 12px;
+  margin-bottom: var(--s2);
+}
+
+.LabelInput {
+  font: inherit;
+  font-size: 13px;
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--accent);
+  border-radius: 4px;
+  padding: 1px 6px;
+  width: 100%;
+  min-width: 0;
+}
+
+/* Small borderless buttons: the star, rename, unstar and the Scan link in the history */
+
+.IconButton {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border-color: transparent;
+  background: none;
+  color: var(--muted);
+  line-height: 1;
+}
+
+.IconButton:hover:not(:disabled) {
+  border-color: transparent;
+  color: var(--text);
+  background: var(--border);
+}
+
+.Star-on,
+.Star-on:hover:not(:disabled) {
+  color: var(--amber);
+}
+
+.LinkButton {
+  flex: none;
+  padding: 2px 8px;
+  border-color: transparent;
+  background: none;
+  color: var(--blue);
+  font-size: 13px;
+}
+
+.LinkButton:hover:not(:disabled) {
+  border-color: transparent;
+  background: var(--border);
+}
+
+/* History */
+
+.SectionHeader {
+  display: flex;
+  gap: var(--s2);
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--s2);
+}
+
+.SectionHeader h2 {
+  margin: 0;
+}
+
+.SectionHeader button {
+  padding: 2px 10px;
+  font-size: 12px;
+}
+
+.HistoryList {
+  border-top: 1px solid var(--border);
+}
+
+.HistoryRow {
+  display: flex;
+  gap: var(--s1);
+  align-items: center;
+  min-width: 0;
+  padding: 2px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.HistoryRow:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.HistoryCode {
+  display: flex;
+  gap: var(--s1);
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+  text-align: left;
+  padding: 4px;
+  border-color: transparent;
+  background: none;
+}
+
+.HistoryCode:hover:not(:disabled) {
+  border-color: transparent;
+}
+
+.HistoryCode:hover .CodeText {
+  text-decoration: underline;
+}
+
 /* Options */
 
 .Fields {

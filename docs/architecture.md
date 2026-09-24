@@ -141,9 +141,10 @@ host/src/
   shared/   used by both sides: the UI protocol, profiles, presets, framing, descriptor, AIM table
   server/   the Node process: HTTP and WebSocket (index.ts), the pipe client, state, paths
   ui/       the React control page
-    components/   one folder per section of the page: header, devices, scan, options, log, common
-    hooks/        useEmulator (the WebSocket), useScan (the next scan), useImageDecoder (photos)
-    utils/        barcode decoding, service status, formatting
+    components/   one folder per section of the page: header, devices, scan, saved, options, log, common
+    hooks/        useEmulator (the WebSocket), useScan (the next scan), useImageDecoder (photos),
+                  useSavedCodes (recent and starred codes, in browser storage)
+    utils/        barcode decoding, scan history, service status, formatting
     constants/    fault definitions, scan defaults
     styles/       the page stylesheet
 ```

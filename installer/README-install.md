@@ -53,7 +53,8 @@ the service changed, double-click `Uninstall.cmd`, then `Install.cmd`. To uninst
    `navigator.hid.requestDevice({ filters: [{ usagePage: 0x8c }] })`. Once the app has it open,
    the card shows **app reading**.
 5. Type the text to scan, for example `221-3351-753`, and press **Scan** (or Ctrl+Enter): the app
-   receives it. A photo of a barcode works too: drop it on the page or paste it.
+   receives it. A photo of a barcode works too: drop it on the page or paste it. Every scan is kept
+   under **History**, where **Scan** sends it again; ☆ pins up to six codes above the text box.
 
 Devices you plugged in stay plugged after the emulator stops, because they belong to the service;
 unplug them on the page first if you want them gone.

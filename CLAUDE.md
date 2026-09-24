@@ -114,7 +114,8 @@ These are environment facts, not preferences. Ignoring them wastes a session:
 
 ## Testing
 
-`yarn test` runs 25 tests over the framing, the descriptor, the AIM prefixes and the service client.
+`yarn test` runs 31 tests over the framing, the descriptor, the AIM prefixes, the service client and
+the control page's scan history.
 They cover the parts that can be tested without Windows, which is why CI (`.github/workflows/host.yml`)
 runs only them, on Linux. Everything below the host has to be exercised on a real machine; see
 `docs/verification.md` for how to do that without a browser in the loop.

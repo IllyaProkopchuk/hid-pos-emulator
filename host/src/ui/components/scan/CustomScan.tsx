@@ -6,8 +6,13 @@ type Props = {
   feedback: string;
   blockedReason: string | null;
   isDisabled: boolean;
+  /** The text box, with its AIM prefix, is among the starred codes. */
+  isStarred: boolean;
+  /** False while every star slot is taken and the text box is not one of them. */
+  canToggleStar: boolean;
   onTextChange: (text: string) => void;
   onScan: () => void;
+  onToggleStar: () => void;
 };
 
 /** Free text scan: the text box, the Scan button and what came back. */
@@ -17,8 +22,11 @@ export const CustomScan = ({
   feedback,
   blockedReason,
   isDisabled,
+  isStarred,
+  canToggleStar,
   onTextChange,
   onScan,
+  onToggleStar,
 }: Props) => (
   <div className="Custom">
     <textarea
@@ -34,6 +42,21 @@ export const CustomScan = ({
     <div className="ScanBar">
       <button type="button" className="Primary" disabled={isDisabled} onClick={onScan}>
         Scan
+      </button>
+      <button
+        type="button"
+        className={isStarred ? 'Toggle-on' : undefined}
+        disabled={text === '' || !canToggleStar}
+        title={
+          canToggleStar
+            ? isStarred
+              ? 'Unpin from above the text box'
+              : 'Pin above the text box, one click from a scan'
+            : 'Every star is taken; unstar a code first'
+        }
+        onClick={onToggleStar}
+      >
+        {isStarred ? '★ Saved' : '☆ Save'}
       </button>
       <span className="Feedback">{feedback}</span>
     </div>
