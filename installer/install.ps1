@@ -73,7 +73,15 @@ foreach ($path in @($driverInf, $certificate, $serviceSource)) {
     }
 }
 
-# 0. Smart App Control refuses to run a self signed binary at all, so the service would never start.
+# 0. The driver INF installs on build 19041 (Windows 10 2004) and newer, and uninstall.ps1 needs the
+#    pnputil verbs that arrived with it. Setup.exe checks the same through MinVersion.
+$osBuild = [System.Environment]::OSVersion.Version.Build
+
+if ($osBuild -lt 19041) {
+    throw "This is Windows build $osBuild. The emulator needs Windows 10 version 2004 (build 19041) or newer, or Windows 11. Update Windows, then run the installer again."
+}
+
+#    Smart App Control refuses to run a self signed binary at all, so the service would never start.
 #    Turning it off is the user's decision and cannot be undone, so this only says so, before
 #    anything on the machine has changed. 1 is on, 2 is evaluation, which may switch itself on later.
 $smartAppControl = (Get-ItemProperty 'HKLM:\SYSTEM\CurrentControlSet\Control\CI\Policy' `

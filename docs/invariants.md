@@ -122,3 +122,27 @@ a real `require` esbuild's ESM output substitutes a stub that throws on ws's fir
 
 **How it looks when broken:** `Dynamic require of "events" is not supported` at startup, or a 404 for
 the control page and `/vendor/zxing.js`.
+
+---
+
+## The driver INF has two install paths, and they must stay in step
+
+`driver/HidPosEmu.inx`.
+
+`MsHidUmdf.inf` only exists from build 22000, so the INF carries two `[Manufacturer]` decorations for
+the same hardware id: `NTamd64.10.0...22000` pulls MsHidUmdf and WUDFRd in through `Include`/`Needs`,
+and `NTamd64.10.0...19041` declares the same two services by hand for Windows 10. Windows picks the
+most specific decoration that matches, so Windows 11 never reads the Windows 10 sections.
+
+Anything added to `HidPosEmu.NT.Wdf` (a UMDF directive, a policy) has to be added to
+`HidPosEmu_Win10.NT.Wdf` too, or the driver behaves differently on the two systems while both still
+install. The Windows 10 decoration cannot drop below 19041: InfVerif rejects DIRID 13 before 17134,
+and `uninstall.ps1` needs the pnputil verbs that arrived with 19041. `MinVersion` in `HidPosEmu.iss`
+and the build check in `install.ps1` say the same number.
+
+`UmdfLibraryVersion` is 2.15, which every Windows 10 has. Raising `UMDF_VERSION_MINOR` in the project
+above what the oldest supported Windows 10 ships (2.31 on 19041) makes the driver fail to load there.
+
+**How it looks when broken:** on Windows 10, `pnputil /add-driver` succeeds but the device shows
+Code 10 or Code 28; on Windows 11 nothing changes, which is why a Windows 11 test alone does not
+catch it.

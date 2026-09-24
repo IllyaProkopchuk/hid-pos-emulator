@@ -9,14 +9,15 @@ what you are about to touch.
 
 ## What this is
 
-A virtual HID-POS barcode scanner for Windows 11. It creates a real device node at the operating
-system level, so the native `navigator.hid` in Chrome, Edge or an Electron app enumerates it as a
-physical Newland NLS-HR22 and receives real `inputreport` events. The app under test is not
+A virtual HID-POS barcode scanner for Windows 10 and 11. It creates a real device node at the
+operating system level, so the native `navigator.hid` in Chrome, Edge or an Electron app enumerates
+it as a physical Newland NLS-HR22 and receives real `inputreport` events. The app under test is not
 modified in any way; that is the whole point of the design.
 
-**Windows 11 x64 is the only target.** macOS was evaluated and dropped, not deferred. The one place
-another platform still matters is CI, which runs the host's tests on Linux because the host is the
-only part that builds anywhere else.
+**Windows x64 is the only target: Windows 11, and Windows 10 from version 2004 (build 19041).**
+The driver INF has a separate install path for each; see its header. macOS was evaluated and dropped,
+not deferred. The one place another platform still matters is CI, which runs the host's tests on
+Linux because the host is the only part that builds anywhere else.
 
 Three components, in the order a scan travels through them:
 
@@ -100,9 +101,9 @@ The two rules that matter most:
 
 These are environment facts, not preferences. Ignoring them wastes a session:
 
-- **Smart App Control must be off.** It refuses to run a self signed binary at all, so the service
-  will not start and `--selftest` will not run either. Turning it off cannot be undone without
-  resetting Windows.
+- **Smart App Control must be off** (Windows 11 only; Windows 10 does not have it). It refuses to
+  run a self signed binary at all, so the service will not start and `--selftest` will not run
+  either. Turning it off cannot be undone without resetting Windows.
 - **Driver traces are invisible in a Release build.** `KdPrint` compiles to nothing, so an empty
   DebugView proves nothing. Rebuild with `-Configuration Debug` before drawing conclusions.
 - **`$ErrorActionPreference = 'Stop'` turns any stderr from a native command into a terminating

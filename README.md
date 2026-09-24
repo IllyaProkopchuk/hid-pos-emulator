@@ -1,7 +1,7 @@
 # hid-pos-emulator
 
 A HID-POS barcode scanner that does not exist. It creates a virtual USB-HID device at the operating
-system level on Windows 11, so the **native** `navigator.hid` in Chrome, Edge or an Electron app
+system level on Windows 10 and 11, so the **native** `navigator.hid` in Chrome, Edge or an Electron app
 enumerates it as a real Newland scanner, delivers real `inputreport` events, and lets a developer
 reproduce barcode and QR scans, including broken ones, without hardware.
 
@@ -11,7 +11,7 @@ the emulator exactly as it reads a scanner on a USB port.
 ## How it fits together
 
 ```
- Windows 11 developer machine
+ Windows 10 or 11 developer machine
  +----------------------------------------------------------------------------+
  |  control page http://localhost:7411  --ws-->  host (Node/TS, unelevated)    |
  |  (src/ui, React: text, faults,               framing.ts builds the wire     |
@@ -34,7 +34,8 @@ completes a pending read with it. From the browser's point of view a scanner jus
 
 ## Quick start
 
-On Windows 11 with Smart App Control off, once per machine:
+On Windows 11, or Windows 10 version 2004 or newer, once per machine (on Windows 11 with Smart App
+Control off):
 
 1. Get `HidPosEmu-<version>-Setup.exe` from the releases and run it (More info, Run anyway),
    approve the single UAC prompt, and restart if it asks you to.
@@ -44,8 +45,8 @@ On Windows 11 with Smart App Control off, once per machine:
 Node.js is built into the release. `installer/README-install.md`, which ships with it, has the
 details and the zip alternative. Working on the emulator itself: `cd host`, `yarn`, `yarn dev`.
 
-**Windows 11 x64 only.** The driver and the service are the whole product and neither exists
-anywhere else.
+**Windows x64 only: Windows 11, or Windows 10 from build 19041.** The driver and the service are
+the whole product and neither exists anywhere else.
 
 The host alone is portable, which is what CI relies on: on Linux it runs, serves its UI and answers
 `POST /scan`, reporting the service as disconnected because there is no device to drive. That is
@@ -76,7 +77,7 @@ Start at [`CLAUDE.md`](CLAUDE.md), which orients a newcomer, human or agent, and
 **Running it**
 
 - [`docs/windows-runbook.md`](docs/windows-runbook.md) - build, install, verify, troubleshoot
-- [`docs/windows-setup.md`](docs/windows-setup.md) - install from zero on a Windows 11 machine, self contained, in Ukrainian
+- [`docs/windows-setup.md`](docs/windows-setup.md) - install from zero on a Windows 10 or 11 machine, self contained, in Ukrainian
 - [`host/README.md`](host/README.md) - profiles, presets, faults, HTTP API, pipe protocol
 - [`installer/README-install.md`](installer/README-install.md) - installing a release, for people who only use it
 

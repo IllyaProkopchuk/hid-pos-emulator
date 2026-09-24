@@ -197,5 +197,5 @@ needs a device is in the manual checklist below.
 ## Manual QA checklist
 
 The acceptance criteria in `docs/windows-runbook.md`, section 6, are the checklist: Windows 11 x64
-(build 22000 or newer) with Secure Boot on, a non-admin account plus one UAC approval, Chrome 128 or
+(build 22000 or newer) or Windows 10 x64 (build 19041 or newer) with Secure Boot on, a non-admin account plus one UAC approval, Chrome 128 or
 newer, and the WebHID app under test.

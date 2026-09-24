@@ -1,11 +1,11 @@
 # Windows runbook
 
-Everything that has to happen on a Windows 11 x64 machine, in order: install the toolchain, build,
+Everything that has to happen on a Windows x64 machine, in order: install the toolchain, build,
 sign, install, verify, and what to do when a step goes wrong. The driver and the service cannot be
 built anywhere else, so this is the only place they are exercised.
 
-Assumed environment: Windows 11 x64, build 22000 or newer, Secure Boot on, test signing off,
-**Smart App Control off**, a developer account plus one administrator approval.
+Assumed environment: Windows 11 x64 (build 22000 or newer) or Windows 10 x64 (build 19041 or newer),
+Secure Boot on, test signing off, **Smart App Control off** (Windows 11 only), a developer account plus one administrator approval.
 
 Smart App Control is not optional to get right. It refuses to run a self signed binary at all, as a
 service and from a console alike, so with it on the service cannot start no matter what else is

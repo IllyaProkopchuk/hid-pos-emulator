@@ -10,7 +10,14 @@
 ;    INF only binds the driver to the HidPosEmu\Scanner hardware id.
 ;
 ;Important:
-;    Depends on MsHidUmdf.inf, which was introduced in build 22000, so Windows 11 only.
+;    Two install paths for the same driver. Windows picks the most specific [Manufacturer]
+;    decoration that matches, so build 22000 and newer (Windows 11) always takes the first one:
+;      - Windows 11: MsHidUmdf and WUDFRd come in through Include/Needs from their inbox INFs.
+;        MsHidUmdf.inf only exists from build 22000, which is why this path cannot serve Windows 10.
+;      - Windows 10 2004 (build 19041) and newer: the same two services declared by hand, the way
+;        vhidmini2 did before MsHidUmdf.inf existed. mshidumdf.sys and WUDFRd.sys themselves ship
+;        with Windows 10. 19041 is also the build that brought the pnputil verbs uninstall.ps1
+;        relies on.
 ;
 ;--*/
 
@@ -35,10 +42,15 @@ HidPosEmu.dll=1
 ; ================= Device section =========================
 
 [Manufacturer]
-%ManufacturerString%=Standard, NT$ARCH$.10.0...22000
+%ManufacturerString%=Standard, NT$ARCH$.10.0...22000, NT$ARCH$.10.0...19041
 
 [Standard.NT$ARCH$.10.0...22000]
 %DeviceDesc%=HidPosEmu, HidPosEmu\Scanner
+
+[Standard.NT$ARCH$.10.0...19041]
+%DeviceDesc%=HidPosEmu_Win10, HidPosEmu\Scanner
+
+; ================= Windows 11: inbox INFs =================
 
 [HidPosEmu.NT]
 CopyFiles=UMDriverCopy
@@ -75,6 +87,45 @@ UmdfFsContextUsePolicy=CanUseFsContext2
 UmdfLibraryVersion=$UMDFVERSION$
 ServiceBinary="%13%\HidPosEmu.dll"
 
+; ================= Windows 10: services by hand ===========
+
+[HidPosEmu_Win10.NT]
+CopyFiles=UMDriverCopy
+
+[HidPosEmu_Win10.NT.hw]
+AddReg=HidPosEmu_Win10_AddReg
+
+[HidPosEmu_Win10_AddReg]
+; FLG_ADDREG_TYPE_MULTI_SZ | FLG_ADDREG_APPEND
+HKR,,"LowerFilters",0x00010008,"WUDFRd"
+
+[HidPosEmu_Win10.NT.Services]
+AddService=WUDFRd,0x000001f8,WUDFRD_ServiceInstall
+; 0x2 in the flags makes mshidumdf the function driver of the device.
+AddService=mshidumdf,0x000001fa,MsHidUmdf_ServiceInstall
+
+[WUDFRD_ServiceInstall]
+DisplayName    = %WudfRdDisplayName%
+ServiceType    = 1
+StartType      = 3
+ErrorControl   = 1
+ServiceBinary  = %12%\WUDFRd.sys
+
+[MsHidUmdf_ServiceInstall]
+DisplayName    = %MsHidUmdfDisplayName%
+ServiceType    = 1
+StartType      = 3
+ErrorControl   = 1
+ServiceBinary  = %12%\mshidumdf.sys
+
+[HidPosEmu_Win10.NT.Wdf]
+UmdfService="HidPosEmu", HidPosEmu_Install
+UmdfServiceOrder=HidPosEmu
+UmdfKernelModeClientPolicy=AllowKernelModeClients
+UmdfFileObjectPolicy=AllowNullAndUnknownFileObjects
+UmdfMethodNeitherAction=Copy
+UmdfFsContextUsePolicy=CanUseFsContext2
+
 ; ================= copy files =========================
 
 [UMDriverCopy]
@@ -87,3 +138,5 @@ ProviderString     = "HidPosEmu"
 ManufacturerString = "HidPosEmu"
 Disk_Description   = "HidPosEmu Installation Disk"
 DeviceDesc         = "HID-POS Scanner Emulator"
+WudfRdDisplayName    = "Windows Driver Foundation - User-mode Driver Framework Reflector"
+MsHidUmdfDisplayName = "Pass through HID to UMDF Driver"

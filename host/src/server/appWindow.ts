@@ -6,7 +6,7 @@ import { spawn } from 'node:child_process';
  * through `--open`.
  *
  * Edge rather than the default browser because only Chromium has `--app`, and Edge is the one
- * Chromium every Windows 11 machine has. `start` finds it through App Paths, so no install path is
+ * Chromium every Windows 11 and every up to date Windows 10 machine has. `start` finds it through App Paths, so no install path is
  * hardcoded. Elsewhere, which only CI is, it prints the address instead.
  */
 export const openAppWindow = (url: string): void => {

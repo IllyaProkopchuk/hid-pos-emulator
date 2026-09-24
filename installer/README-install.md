@@ -1,4 +1,4 @@
-# HidPosEmu, install on Windows 11
+# HidPosEmu, install on Windows 10 and 11
 
 This package creates a virtual USB-HID barcode scanner on your machine. Chrome, Edge and Electron
 apps see it through the native `navigator.hid`, exactly like a real Newland scanner. Nothing in the
@@ -10,8 +10,9 @@ folder of your own. Use one or the other on a machine, not both.
 
 ## Before you start
 
-- **Windows 11 x64**, and administrator rights for one UAC prompt.
-- **Smart App Control off.** Check in Windows Security > App & browser control > Smart App Control
+- **Windows 11 x64, or Windows 10 x64 version 2004 (build 19041) or newer**, and administrator
+  rights for one UAC prompt.
+- **Smart App Control off** (Windows 11 only; Windows 10 does not have it). Check in Windows Security > App & browser control > Smart App Control
   settings. While it is on, Windows refuses to run the emulator's self signed service, and Setup
   stops and says so. Windows cannot turn it back on without a reset, so decide with that in mind.
 - Nothing else. Node.js is built in; you do not need your own.
