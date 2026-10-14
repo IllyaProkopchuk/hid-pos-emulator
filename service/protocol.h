@@ -9,7 +9,7 @@
 #include <string>
 #include <vector>
 
-#define HIDPOSEMU_SERVICE_VERSION "1.0.0"
+#define HIDPOSEMU_SERVICE_VERSION "1.1.0"
 
 namespace hidposemu {
 

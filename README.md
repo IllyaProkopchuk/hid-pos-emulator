@@ -87,7 +87,7 @@ Using the emulator needs no build. Releases are built on a machine with Visual S
 matching SDK + WDK pair, set up as described in [`docs/windows-runbook.md`](docs/windows-runbook.md):
 
 ```powershell
-.\installer\build.ps1 -Version 1.0.0
+.\installer\build.ps1 -Version 1.1.0
 ```
 
 CI (`.github/workflows/host.yml`) covers the host only: `yarn test` and `yarn typecheck` on Node 20.

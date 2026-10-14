@@ -30,7 +30,7 @@ Three components, in the order a scan travels through them:
 ## Commands
 
 ```powershell
-.\installer\build.ps1 -Version 1.0.0    # builds, signs, bundles host + node.exe, writes out\*.zip and *-Setup.exe
+.\installer\build.ps1 -Version 1.1.0    # builds, signs, bundles host + node.exe, writes out\*.zip and *-Setup.exe
 cd host; yarn; yarn test; yarn typecheck
 cd host; yarn dev                        # page rebuild + server restart on save, refresh the browser
 & "$env:ProgramFiles\HidPosEmu\HidPosEmuSvc.exe" --selftest   # needs administrator

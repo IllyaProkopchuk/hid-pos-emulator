@@ -60,13 +60,13 @@ node --version    # v20.x
 
 ```powershell
 cd hid-pos-emulator
-.\installer\build.ps1 -Version 1.0.0
+.\installer\build.ps1 -Version 1.1.0
 ```
 
 The script creates `installer\HidPosEmu.pfx` (gitignored) and `installer\HidPosEmu.cer` the first
 time it runs, builds both solutions, runs `inf2cat`, signs the catalog, the driver DLL and the
 service, bundles the host with esbuild and this machine's `node.exe`, and writes
-`out\HidPosEmu-1.0.0-x64.zip`; then, if Inno Setup is installed, `out\HidPosEmu-1.0.0-Setup.exe`
+`out\HidPosEmu-1.1.0-x64.zip`; then, if Inno Setup is installed, `out\HidPosEmu-1.1.0-Setup.exe`
 from the same files, signed with the same certificate.
 
 Run `yarn` in `host\` at least once before building, or the bundle step has no esbuild to call. The
@@ -89,7 +89,7 @@ output stays in a window you already have. Scripts are blocked by default, hence
 
 ```powershell
 Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Force
-Expand-Archive .\out\HidPosEmu-1.0.0-x64.zip -DestinationPath C:\Tools\HidPosEmu -Force
+Expand-Archive .\out\HidPosEmu-1.1.0-x64.zip -DestinationPath C:\Tools\HidPosEmu -Force
 cd C:\Tools\HidPosEmu
 .\install.ps1
 ```

@@ -14,7 +14,7 @@
 
 [CmdletBinding()]
 param(
-    [string]$Version = '1.0.0',
+    [string]$Version = '1.1.0',
     [ValidateSet('Release', 'Debug')]
     [string]$Configuration = 'Release',
     # Builds a driver-only zip. Useful on a machine that cannot reach the npm registry, but the

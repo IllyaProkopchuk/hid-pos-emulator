@@ -180,7 +180,7 @@ yarn typecheck
 
 ```powershell
 cd C:\work\hid-pos-emulator
-.\installer\build.ps1 -Version 1.0.0
+.\installer\build.ps1 -Version 1.1.0
 ```
 
 Що робить скрипт:
@@ -191,7 +191,7 @@ cd C:\work\hid-pos-emulator
 3. Збирає `driver\HidPosEmu.sln` і `service\HidPosEmuSvc.sln` у конфігурації Release, платформа x64.
 4. Складає корисне навантаження в `out\package\`, робить каталог `HidPosEmu.cat` через `inf2cat` і
    підписує каталог, `HidPosEmu.dll` і `HidPosEmuSvc.exe`.
-5. Пакує `out\HidPosEmu-1.0.0-x64.zip`.
+5. Пакує `out\HidPosEmu-1.1.0-x64.zip`.
 
 **Сертифікат бережи.** Заміна `HidPosEmu.pfx` означає, що кожна машина має заново імпортувати новий
 `.cer`.
@@ -199,7 +199,7 @@ cd C:\work\hid-pos-emulator
 ### Перевірка кроку 4
 
 ```powershell
-Test-Path .\out\HidPosEmu-1.0.0-x64.zip
+Test-Path .\out\HidPosEmu-1.1.0-x64.zip
 Get-ChildItem .\out\package -Recurse -File | Select-Object -ExpandProperty Name
 ```
 
@@ -214,7 +214,7 @@ Get-ChildItem .\out\package -Recurse -File | Select-Object -ExpandProperty Name
 ## 5. Встановити
 
 ```powershell
-Expand-Archive .\out\HidPosEmu-1.0.0-x64.zip -DestinationPath C:\Tools\HidPosEmu -Force
+Expand-Archive .\out\HidPosEmu-1.1.0-x64.zip -DestinationPath C:\Tools\HidPosEmu -Force
 ```
 
 Далі відкрий PowerShell **від адміністратора** і запусти:
@@ -363,7 +363,7 @@ yarn start
 звичайними помилками компіляції:
 
 ```powershell
-.\installer\build.ps1 -Version 1.0.0 2>&1 | Tee-Object -FilePath build.log
+.\installer\build.ps1 -Version 1.1.0 2>&1 | Tee-Object -FilePath build.log
 Select-String -Path build.log -Pattern 'error' -Context 0,2
 ```
 
